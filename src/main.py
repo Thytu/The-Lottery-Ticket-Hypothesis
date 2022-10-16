@@ -23,14 +23,14 @@ train_dataloader = get_data_load(
     split="train",
     batch_size=64,
     num_workers=4,
-    subset=1_000
+    subset=None
 )
 
 val_dataloader = get_data_load(
     split="val",
     batch_size=64,
     num_workers=4,
-    subset=1_000
+    subset=None
 )
 
 model = LeNet().to(DEVICE)
@@ -75,8 +75,8 @@ def get_sparsity(model: Module) -> float:
 for training_iteration in tqdm(range(1, NB_ITER + 1), total=NB_ITER):
     pbar = tqdm(range(1, NB_EPOCHS + 1), total=NB_EPOCHS, leave=False)
 
-    losses[get_sparsity(training_iteration)] = {}
-    accuracies[get_sparsity(training_iteration)] = {}
+    losses[get_sparsity(model=model)] = {}
+    accuracies[get_sparsity(model=model)] = {}
 
     for epoch in pbar:
         train_loss, train_acc = train_model(
@@ -96,8 +96,8 @@ for training_iteration in tqdm(range(1, NB_ITER + 1), total=NB_ITER):
 
         iter_nb = epoch * len(train_dataloader)
 
-        losses[get_sparsity(training_iteration)][iter_nb] = test_loss
-        accuracies[get_sparsity(training_iteration)][iter_nb] = test_acc
+        losses[get_sparsity(model=model)][iter_nb] = test_loss
+        accuracies[get_sparsity(model=model)][iter_nb] = test_acc
 
         pbar.set_description(f"(iter: {iter_nb}) {train_loss=:.2f} {train_acc=:.2f} {test_loss=:.2f} {test_acc=:.2f}")
 
