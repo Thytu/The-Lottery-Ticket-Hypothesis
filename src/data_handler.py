@@ -1,6 +1,6 @@
 from torchvision import transforms
 from torch.utils.data import DataLoader, Subset
-from torchvision.datasets import MNIST, MNIST
+from torchvision.datasets import MNIST
 from torch import randperm as torch_randperm
 
 
