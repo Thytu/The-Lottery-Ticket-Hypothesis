@@ -12,6 +12,9 @@ def plot_losses(losses: Dict[float, Dict[float, List[float]]]) -> None:
 
     plt.clf()
 
+    plt.figure(figsize=(20, 10))
+    plt.tight_layout()
+
     sparsity_levels = [round(sparsity_level, 2) for sparsity_level in losses.keys()]
 
     for sparsity_level, key in zip(sparsity_levels, losses.keys()):
@@ -21,7 +24,7 @@ def plot_losses(losses: Dict[float, Dict[float, List[float]]]) -> None:
     plt.ylabel("Loss on the test set")
 
     plt.legend(loc='best')
-    plt.savefig("losses.png")
+    plt.savefig("losses.png", bbox_inches='tight', pad_inches=0.1)
 
 
 def plot_accuracies(accuracies: Dict[float, Dict[float, List[float]]]) -> None:
@@ -34,6 +37,9 @@ def plot_accuracies(accuracies: Dict[float, Dict[float, List[float]]]) -> None:
 
     plt.clf()
 
+    plt.figure(figsize=(20, 10))
+    plt.tight_layout()
+
     sparsity_levels = [round(sparsity_level, 2) for sparsity_level in accuracies.keys()]
 
     for sparsity_level, key in zip(sparsity_levels, accuracies.keys()):
@@ -43,4 +49,4 @@ def plot_accuracies(accuracies: Dict[float, Dict[float, List[float]]]) -> None:
     plt.ylabel("Accuracy on the test set")
 
     plt.legend(loc='best')
-    plt.savefig("accuracies.png")
+    plt.savefig("accuracies.png", bbox_inches='tight', pad_inches=0.1)
