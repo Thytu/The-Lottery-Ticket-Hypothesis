@@ -1,8 +1,9 @@
-from LeNet5 import LeNet5
+from modulefinder import Module
+from LeNet import LeNet
 from data_handler import get_data_load
 from training import train_model, test_model
 from torch.cuda import is_available as cuda_is_available
-from torch import device as get_device
+from torch import device as get_device, sum as torch_sum
 from torch.optim import Adam
 from torch.nn import CrossEntropyLoss
 from tqdm import tqdm
@@ -11,10 +12,10 @@ from copy import deepcopy
 from ploting import plot_losses, plot_accuracies
 
 
-NB_ITER = 10
-NB_EPOCHS = 160
+NB_ITER = 20
+NB_EPOCHS = 50
 BATCH_SIZE = 64
-SPARSITY_RATE = 0.15
+SPARSITY_RATE = 0.2
 DEVICE = get_device("cuda" if cuda_is_available() else "cpu")
 
 
@@ -22,17 +23,17 @@ train_dataloader = get_data_load(
     split="train",
     batch_size=64,
     num_workers=4,
-    subset=None
+    subset=1_000
 )
 
 val_dataloader = get_data_load(
     split="val",
     batch_size=64,
     num_workers=4,
-    subset=None
+    subset=1_000
 )
 
-model = LeNet5(n_classes=10).to(DEVICE)
+model = LeNet().to(DEVICE)
 INITIAL_WEIGHTS = deepcopy(model.state_dict())
 
 criterion = CrossEntropyLoss()
@@ -45,23 +46,30 @@ losses = {}
 accuracies = {}
 
 
-def get_sparsity(training_iteration: int) -> float:
+def get_sparsity(model: Module) -> float:
     """
     Calculate the sparsity level given the training iteration step
 
     Args:
-        training_iteration (int): training iteration step
+        model (Module): model the calculate the sparisty of (expects LeNet architecture)
 
     Returns:
         float: sparsity level given the training iteration step
     """
 
-    sparsity = 1.0
-
-    for _ in range(training_iteration - 1):
-        sparsity = sparsity * (1 - SPARSITY_RATE)
-
-    return sparsity
+    return 100. * float(
+        torch_sum(model.feature_extractor[0].weight == 0)
+        + torch_sum(model.feature_extractor[3].weight == 0)
+        + torch_sum(model.classifier[0].weight == 0)
+        + torch_sum(model.classifier[2].weight == 0)
+        + torch_sum(model.classifier[-1].weight == 0)
+    ) / float(
+        model.feature_extractor[0].weight.nelement()
+        + model.feature_extractor[3].weight.nelement()
+        + model.classifier[0].weight.nelement()
+        + model.classifier[2].weight.nelement()
+        + model.classifier[-1].weight.nelement()
+    )
 
 
 for training_iteration in tqdm(range(1, NB_ITER + 1), total=NB_ITER):
@@ -93,12 +101,11 @@ for training_iteration in tqdm(range(1, NB_ITER + 1), total=NB_ITER):
 
         pbar.set_description(f"(iter: {iter_nb}) {train_loss=:.2f} {train_acc=:.2f} {test_loss=:.2f} {test_acc=:.2f}")
 
-    # TODO: verify that pruning is cumulative
     parameters_to_prune = (
         (model.feature_extractor[0], 'weight'),
         (model.feature_extractor[3], 'weight'),
-        (model.feature_extractor[6], 'weight'),
         (model.classifier[0], 'weight'),
+        (model.classifier[2], 'weight'),
     )
     prune.global_unstructured(
         parameters_to_prune,

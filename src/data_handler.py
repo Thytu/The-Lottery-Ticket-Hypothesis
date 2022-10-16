@@ -1,12 +1,12 @@
 from torchvision import transforms
 from torch.utils.data import DataLoader, Subset
-from torchvision.datasets import CIFAR10
+from torchvision.datasets import MNIST, MNIST
 from torch import randperm as torch_randperm
 
 
 def get_transform(split: str) -> transforms.Compose:
     """
-    Get Compose transform for the CIFAR10 dataset and LeNet5 network
+    Get Compose transform for the MNIST dataset and LeNet5 network
 
     Args:
         split (str): either train or val
@@ -15,7 +15,7 @@ def get_transform(split: str) -> transforms.Compose:
         RuntimeError: Unknown split value
 
     Returns:
-        transforms.Compose: transform for the CIFAR10 dataset and LeNet5 network
+        transforms.Compose: transform for the MNIST dataset and LeNet5 network
     """
 
     normalize_transform = transforms.Normalize(
@@ -45,16 +45,16 @@ def get_transform(split: str) -> transforms.Compose:
 
 def get_data_load(split: str, **kwargs) -> DataLoader:
     """
-    Return a dataloader for the CIFAR10 dataset
+    Return a dataloader for the MNIST dataset
 
     Args:
         split (str): either train of val
 
     Returns:
-        DataLoader: CIFAR10 dataloader
+        DataLoader: MNIST dataloader
     """
 
-    dataset = CIFAR10(
+    dataset = MNIST(
         root=kwargs.get("root", './data'),
         train=(split == "train"),
         transform=get_transform(split),
