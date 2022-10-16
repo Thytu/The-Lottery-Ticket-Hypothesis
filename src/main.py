@@ -12,10 +12,10 @@ from copy import deepcopy
 from ploting import plot_losses, plot_accuracies
 
 
-NB_ITER = 20
+NB_ITER = 8
 NB_EPOCHS = 50
 BATCH_SIZE = 64
-SPARSITY_RATE = 0.2
+DEFAULT_SPARSITY_RATE = 0.2
 DEVICE = get_device("cuda" if cuda_is_available() else "cpu")
 
 
@@ -110,7 +110,7 @@ for training_iteration in tqdm(range(1, NB_ITER + 1), total=NB_ITER):
     prune.global_unstructured(
         parameters_to_prune,
         pruning_method=prune.L1Unstructured,
-        amount=SPARSITY_RATE,
+        amount=DEFAULT_SPARSITY_RATE if training_iteration < 3 else DEFAULT_SPARSITY_RATE * (training_iteration / 2),
     )
 
     # Reset weights
