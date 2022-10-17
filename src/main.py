@@ -13,7 +13,7 @@ from ploting import plot_losses, plot_accuracies
 
 
 NB_ITER = 8
-NB_EPOCHS = 50
+NB_EPOCHS = 30
 BATCH_SIZE = 64
 DEFAULT_SPARSITY_RATE = 0.2
 DEVICE = get_device("cuda" if cuda_is_available() else "cpu")
@@ -117,7 +117,7 @@ for training_iteration in tqdm(range(1, NB_ITER + 1), total=NB_ITER):
     reseted_weights = model.state_dict()
     for param in reseted_weights.keys():
         if param.split(".")[-1].replace("_orig", "") in ("bias", "weight"):
-            reseted_weights[param] = INITIAL_WEIGHTS[param.replace("_orig", "")]
+            reseted_weights[param] = deepcopy(INITIAL_WEIGHTS[param.replace("_orig", "")])
 
     model.load_state_dict(reseted_weights)
 
