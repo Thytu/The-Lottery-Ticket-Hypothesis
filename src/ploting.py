@@ -18,13 +18,14 @@ def plot_losses(losses: Dict[float, Dict[float, List[float]]]) -> None:
     sparsity_levels = [round(sparsity_level, 2) for sparsity_level in losses.keys()]
 
     for sparsity_level, key in zip(sparsity_levels, losses.keys()):
-        plt.plot(list(losses[key].keys()), list(losses[key].values()), '+--', label=f"Sparsity: {sparsity_level}")
+        plt.plot(list(losses[key].keys()), list(losses[key].values()), '+--', label=f"{int(100 - sparsity_level)}%")
 
     plt.xlabel("Training iterations")
     plt.ylabel("Loss on the test set")
+    plt.title("Model's loss regarding the fraction of weights remaining in the network after pruning.")
 
     plt.legend(loc='best')
-    plt.savefig("losses.png", bbox_inches='tight', pad_inches=0.1)
+    plt.savefig("images/losses.png", bbox_inches='tight', pad_inches=0.1)
 
 
 def plot_accuracies(accuracies: Dict[float, Dict[float, List[float]]]) -> None:
@@ -43,10 +44,12 @@ def plot_accuracies(accuracies: Dict[float, Dict[float, List[float]]]) -> None:
     sparsity_levels = [round(sparsity_level, 2) for sparsity_level in accuracies.keys()]
 
     for sparsity_level, key in zip(sparsity_levels, accuracies.keys()):
-        plt.plot(list(accuracies[key].keys()), list(accuracies[key].values()), '+--', label=f"Sparsity: {sparsity_level}")
+        plt.plot(list(accuracies[key].keys()), list(accuracies[key].values()), '+--', label=f"{int(100 - sparsity_level)}%")
 
     plt.xlabel("Training iterations")
     plt.ylabel("Accuracy on the test set")
+    plt.title("Model's accuracy regarding the fraction of weights remaining in the network after pruning.")
+
 
     plt.legend(loc='best')
-    plt.savefig("accuracies.png", bbox_inches='tight', pad_inches=0.1)
+    plt.savefig("images/accuracies.png", bbox_inches='tight', pad_inches=0.1)
