@@ -19,15 +19,13 @@ def get_transform(split: str) -> transforms.Compose:
     """
 
     normalize_transform = transforms.Normalize(
-        mean=[0.5],
-        std=[0.5]
+        mean=(0.1307,),
+        std=(0.3081,)
     )
 
     if split == "train":
         return transforms.Compose([
             transforms.RandomResizedCrop(32),
-            transforms.RandomHorizontalFlip(),
-            transforms.Grayscale(num_output_channels=1),
             transforms.ToTensor(),
             normalize_transform,
         ])
@@ -35,7 +33,6 @@ def get_transform(split: str) -> transforms.Compose:
     elif split == "val":
         return transforms.Compose([
             transforms.CenterCrop(32),
-            transforms.Grayscale(num_output_channels=1),
             transforms.ToTensor(),
             normalize_transform,
         ])
