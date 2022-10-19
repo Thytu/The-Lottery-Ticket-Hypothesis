@@ -16,7 +16,9 @@ def train_model(
     dataloader: DataLoader,
     optimizer: Optimizer,
     criterion: Module,
-    device: Optional[torch_device] = None
+    training_iteration: int,
+    max_training_iter: int,
+    device: Optional[torch_device] = None,
 ) -> Tuple[float, float]:
     """
     Train the model given the provided data, optimizer and criterion
@@ -26,6 +28,8 @@ def train_model(
         dataloader (DataLoader): data to train the model on
         optimizer (Optimizer): optimizer to use
         criterion (Module): criterion to optimize
+        training_iteration (int): current training iteration
+        max_training_iter (int): used to stop the training when >= training_iteration max_training_iter
         device (Optional[torch_device], optional): device to use. Defaults to None.
 
     Returns:
@@ -55,12 +59,17 @@ def train_model(
 
         optimizer.step()
 
+        training_iteration += 1
+
         step_losses.append(loss.item())
         step_accuracies.append(calc_accurary(outputs, labels))
 
         pbar.set_description(f'[train] loss: {sum(step_losses) / len(step_losses):.3f} acc: {sum(step_accuracies) / len(step_accuracies):.3f}')
 
-    return sum(step_losses) / len(step_losses), sum(step_accuracies) / len(step_accuracies)
+        if training_iteration >= max_training_iter:
+            break
+
+    return sum(step_losses) / len(step_losses), sum(step_accuracies) / len(step_accuracies), training_iteration
 
 
 def test_model(

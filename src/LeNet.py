@@ -3,7 +3,9 @@ import torch.nn as nn
 from torch import flatten
 
 class LeNet(nn.Module):
-    # TODO: doc
+    """
+    Lenet-300-100 architecture (LeCun et al., 1998)
+    """
 
     def __init__(self):
         super(LeNet, self).__init__()

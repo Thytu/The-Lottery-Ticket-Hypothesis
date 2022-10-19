@@ -1,3 +1,4 @@
+from typing import Tuple
 from torchvision import transforms
 from torch.utils.data import DataLoader, Subset
 from torchvision.datasets import MNIST
@@ -23,32 +24,45 @@ def get_transform() -> transforms.Compose:
     ])
 
 
-def get_data_loader(split: str, **kwargs) -> DataLoader:
-    """
-    Return a dataloader for the MNIST dataset
-
-    Args:
-        split (str): either train of val
-
-    Returns:
-        DataLoader: MNIST dataloader
-    """
-
-    dataset = MNIST(
+def get_data_loaders(**kwargs) -> Tuple[DataLoader, DataLoader, DataLoader]:
+    train_set = MNIST(
         root=kwargs.get("root", './data'),
-        train=(split == "train"),
+        train=True,
         transform=get_transform(),
         download=True
     )
 
-    if kwargs.get("subset", None):
-        dataset = Subset(
-            dataset=dataset,
-            indices=torch_randperm(len(dataset))[:kwargs.get("subset")]
-        )
+    shuffled_indices = torch_randperm(len(train_set))
+
+    val_set = Subset(
+        dataset=train_set,
+        indices=shuffled_indices[:5_000]
+    )
+
+    train_set = Subset(
+        dataset=train_set,
+        indices=shuffled_indices[5_000:]
+    )
+
+    test_set = MNIST(
+        root=kwargs.get("root", './data'),
+        train=False,
+        transform=get_transform(),
+        download=True
+    )
 
     return DataLoader(
-        dataset,
+        dataset=train_set,
+        batch_size=kwargs.get("batch_size", 32),
+        shuffle=True,
+        num_workers=kwargs.get("num_workers", 1)
+    ), DataLoader(
+        dataset=test_set,
+        batch_size=kwargs.get("batch_size", 32),
+        shuffle=True,
+        num_workers=kwargs.get("num_workers", 1)
+    ), DataLoader(
+        dataset=val_set,
         batch_size=kwargs.get("batch_size", 32),
         shuffle=True,
         num_workers=kwargs.get("num_workers", 1)
