@@ -23,7 +23,7 @@ def get_transform() -> transforms.Compose:
     ])
 
 
-def get_data_load(split: str, **kwargs) -> DataLoader:
+def get_data_loader(split: str, **kwargs) -> DataLoader:
     """
     Return a dataloader for the MNIST dataset
 

@@ -1,6 +1,6 @@
 from modulefinder import Module
 from LeNet import LeNet
-from data_handler import get_data_load
+from data_handler import get_data_loader
 from training import train_model, test_model
 from torch.cuda import is_available as cuda_is_available
 from torch import device as get_device, sum as torch_sum
@@ -19,14 +19,14 @@ DEFAULT_SPARSITY_RATE = 0.2
 DEVICE = get_device("cuda" if cuda_is_available() else "cpu")
 
 
-train_dataloader = get_data_load(
+train_dataloader = get_data_loader(
     split="train",
     batch_size=64,
     num_workers=4,
     subset=None
 )
 
-val_dataloader = get_data_load(
+val_dataloader = get_data_loader(
     split="val",
     batch_size=64,
     num_workers=4,
