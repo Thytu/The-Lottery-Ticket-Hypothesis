@@ -13,7 +13,7 @@ from torch import device as get_device, sum as torch_sum
 
 P = 0.2
 BATCH_SIZE = 60
-NB_PRUNING_ITER = 9
+NB_PRUNING_ITER = 7
 MAX_TRAINING_ITER = 15_000
 DEVICE = get_device("cuda" if cuda_is_available() else "cpu")
 
