@@ -18,7 +18,7 @@ def plot_losses(losses: Dict[float, Dict[float, List[float]]]) -> None:
     sparsity_levels = [round(sparsity_level, 2) for sparsity_level in losses.keys()]
 
     for sparsity_level, key in zip(sparsity_levels, losses.keys()):
-        plt.plot(list(losses[key].keys()), list(losses[key].values()), '+--', label=f"{int(100 - sparsity_level)}%")
+        plt.plot(list(losses[key].keys()), list(losses[key].values()), '+--', label=f"{100 - sparsity_level:.2f}%")
 
     plt.xlabel("Training iterations")
     plt.ylabel("Loss on the test set")
@@ -44,7 +44,7 @@ def plot_accuracies(accuracies: Dict[float, Dict[float, List[float]]]) -> None:
     sparsity_levels = [round(sparsity_level, 2) for sparsity_level in accuracies.keys()]
 
     for sparsity_level, key in zip(sparsity_levels, accuracies.keys()):
-        plt.plot(list(accuracies[key].keys()), list(accuracies[key].values()), '+--', label=f"{int(100 - sparsity_level)}%")
+        plt.plot(list(accuracies[key].keys()), list(accuracies[key].values()), '+--', label=f"{100 - sparsity_level:.2f}%")
 
     plt.xlabel("Training iterations")
     plt.ylabel("Accuracy on the test set")

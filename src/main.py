@@ -13,8 +13,8 @@ from ploting import plot_losses, plot_accuracies
 
 
 NB_ITER = 8
-NB_EPOCHS = 30
-BATCH_SIZE = 64
+NB_EPOCHS = 15
+BATCH_SIZE = 60
 DEFAULT_SPARSITY_RATE = 0.2
 DEVICE = get_device("cuda" if cuda_is_available() else "cpu")
 
@@ -58,15 +58,11 @@ def get_sparsity(model: Module) -> float:
     """
 
     return 100. * float(
-        torch_sum(model.feature_extractor[0].weight == 0)
-        + torch_sum(model.feature_extractor[3].weight == 0)
-        + torch_sum(model.classifier[0].weight == 0)
+        torch_sum(model.classifier[0].weight == 0)
         + torch_sum(model.classifier[2].weight == 0)
         + torch_sum(model.classifier[-1].weight == 0)
     ) / float(
-        model.feature_extractor[0].weight.nelement()
-        + model.feature_extractor[3].weight.nelement()
-        + model.classifier[0].weight.nelement()
+        model.classifier[0].weight.nelement()
         + model.classifier[2].weight.nelement()
         + model.classifier[-1].weight.nelement()
     )
@@ -101,17 +97,10 @@ for training_iteration in tqdm(range(1, NB_ITER + 1), total=NB_ITER):
 
         pbar.set_description(f"(iter: {iter_nb}) {train_loss=:.2f} {train_acc=:.2f} {test_loss=:.2f} {test_acc=:.2f}")
 
-    parameters_to_prune = (
-        (model.feature_extractor[0], 'weight'),
-        (model.feature_extractor[3], 'weight'),
-        (model.classifier[0], 'weight'),
-        (model.classifier[2], 'weight'),
-    )
-    prune.global_unstructured(
-        parameters_to_prune,
-        pruning_method=prune.L1Unstructured,
-        amount=DEFAULT_SPARSITY_RATE if training_iteration < 3 else DEFAULT_SPARSITY_RATE * (training_iteration / 2),
-    )
+    n = training_iteration # TODO: determinate n following the paper
+    prune.l1_unstructured(model.classifier[0], name="weight", amount=(DEFAULT_SPARSITY_RATE) ** (1 / n))
+    prune.l1_unstructured(model.classifier[2], name="weight", amount=(DEFAULT_SPARSITY_RATE) ** (1 / n))
+    prune.l1_unstructured(model.classifier[-1], name="weight", amount=(DEFAULT_SPARSITY_RATE / 2) ** (1 / n))
 
     # Reset weights
     reseted_weights = model.state_dict()

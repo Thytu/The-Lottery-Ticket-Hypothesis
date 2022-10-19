@@ -4,15 +4,9 @@ from torchvision.datasets import MNIST
 from torch import randperm as torch_randperm
 
 
-def get_transform(split: str) -> transforms.Compose:
+def get_transform() -> transforms.Compose:
     """
     Get Compose transform for the MNIST dataset and LeNet5 network
-
-    Args:
-        split (str): either train or val
-
-    Raises:
-        RuntimeError: Unknown split value
 
     Returns:
         transforms.Compose: transform for the MNIST dataset and LeNet5 network
@@ -23,21 +17,10 @@ def get_transform(split: str) -> transforms.Compose:
         std=(0.3081,)
     )
 
-    if split == "train":
-        return transforms.Compose([
-            transforms.RandomResizedCrop(32),
-            transforms.ToTensor(),
-            normalize_transform,
-        ])
-
-    elif split == "val":
-        return transforms.Compose([
-            transforms.CenterCrop(32),
-            transforms.ToTensor(),
-            normalize_transform,
-        ])
-
-    raise RuntimeError(f"Unknown split value {split}, must be either 'train' or 'val'")
+    return transforms.Compose([
+        transforms.ToTensor(),
+        normalize_transform,
+    ])
 
 
 def get_data_load(split: str, **kwargs) -> DataLoader:
@@ -54,7 +37,7 @@ def get_data_load(split: str, **kwargs) -> DataLoader:
     dataset = MNIST(
         root=kwargs.get("root", './data'),
         train=(split == "train"),
-        transform=get_transform(split),
+        transform=get_transform(),
         download=True
     )
 
