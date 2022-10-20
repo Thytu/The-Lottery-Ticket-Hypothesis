@@ -17,7 +17,7 @@
   <h3 align="center">The Lottery Ticket Hypothesis</h3>
 
   <p align="center">
-    Implementation of the [The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks](https://arxiv.org/abs/1803.03635) paper.
+    Implementation of the "The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks" paper.
     <br />
     <a href="#usage"><strong>Explore the docs »</strong></a>
     <br />
