@@ -11,7 +11,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Thytu/The-Lottery-Ticket-Hypothesis">
-    <img src=".img/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://img.icons8.com/external-justicon-flat-justicon/344/external-lottery-gambling-justicon-flat-justicon.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">The Lottery Ticket Hypothesis</h3>
