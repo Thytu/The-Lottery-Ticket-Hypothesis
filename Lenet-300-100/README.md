@@ -4,7 +4,7 @@
   <h3 align="center">Lenet-300-100</h3>
 
   <p align="center">
-    Code and result for the experiments with Lenet-300-100 on MNIIST.
+    Code and result for the experiments with Lenet-300-100 on MNIST.
     <br />
   </p>
 </div>
