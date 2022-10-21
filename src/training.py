@@ -1,10 +1,9 @@
-from tqdm import tqdm
 from torch.nn import Module
+from torch.optim import Optimizer
 from typing import Optional, Tuple
 from torch.utils.data import DataLoader
-from torch import device as torch_device, eq as torch_eq, argmax as torch_argmax, no_grad as torch_no_grad
 from torch.cuda import is_available as cuda_is_available
-from torch.optim import Optimizer
+from torch import device as torch_device, eq as torch_eq, argmax as torch_argmax, no_grad as torch_no_grad
 
 
 def calc_accurary(preds, y_true) -> float:
@@ -44,9 +43,7 @@ def train_model(
     step_losses = []
     step_accuracies = []
 
-    pbar = tqdm(dataloader, total=len(dataloader), leave=False)
-
-    for data in pbar:
+    for data in dataloader:
         inputs, labels = data
         inputs, labels = inputs.to(device), labels.to(device)
 
@@ -63,8 +60,6 @@ def train_model(
 
         step_losses.append(loss.item())
         step_accuracies.append(calc_accurary(outputs, labels))
-
-        pbar.set_description(f'[train] loss: {sum(step_losses) / len(step_losses):.3f} acc: {sum(step_accuracies) / len(step_accuracies):.3f}')
 
         if training_iteration >= max_training_iter:
             break
@@ -99,10 +94,8 @@ def test_model(
     step_losses = []
     step_accuracies = []
 
-    pbar = tqdm(dataloader, total=len(dataloader), leave=False)
-
     with torch_no_grad():
-        for data in pbar:
+        for data in dataloader:
             inputs, labels = data
             inputs, labels = inputs.to(device), labels.to(device)
 
@@ -112,7 +105,5 @@ def test_model(
 
             step_losses.append(loss.item())
             step_accuracies.append(calc_accurary(outputs, labels))
-
-            pbar.set_description(f'[eval] loss: {sum(step_losses) / len(step_losses):.3f} acc: {sum(step_accuracies) / len(step_accuracies):.3f}')
 
     return sum(step_losses) / len(step_losses), sum(step_accuracies) / len(step_accuracies)
