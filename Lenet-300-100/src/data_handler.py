@@ -7,10 +7,10 @@ from torch import randperm as torch_randperm
 
 def get_transform() -> transforms.Compose:
     """
-    Get Compose transform for the MNIST dataset and LeNet5 network
+    Get Compose transform for the MNIST dataset
 
     Returns:
-        transforms.Compose: transform for the MNIST dataset and LeNet5 network
+        transforms.Compose: transform for the MNIST dataset
     """
 
     normalize_transform = transforms.Normalize(
