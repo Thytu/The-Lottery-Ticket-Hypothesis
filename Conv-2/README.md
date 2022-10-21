@@ -20,7 +20,9 @@
 **To reproduce this experiment** : `python src/main.py`
 
 Running this script will train a `Conv2` based model on `CIFAR10` and will prune iteratively the model.\
-Each layer is puned independently by a factor $P$, defined as follow : $P=p^{1/n}$ with $p=0.2$ and $n$ the round of pruning.
+Each layer is puned independently by a factor $P$, defined as follow : $P=p^{1/n}$ with $n$ the round of pruning.
+
+$p=0.1$ for convolutions, $p=0.2$ for FC Layers and $p=0.1$ for the output layer.
 
 <br/>
 <br/>

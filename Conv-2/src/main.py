@@ -46,10 +46,16 @@ def main(nb_pruning_iter, max_training_iter, p_linear, p_conv):
             torch_sum(model.classifier[0].weight == 0)
             + torch_sum(model.classifier[2].weight == 0)
             + torch_sum(model.classifier[-1].weight == 0)
+
+            + torch_sum(model.features_extractor[0].weight == 0)
+            + torch_sum(model.features_extractor[2].weight == 0)
         ) / float(
             model.classifier[0].weight.nelement()
             + model.classifier[2].weight.nelement()
             + model.classifier[-1].weight.nelement()
+
+            + model.features_extractor[0].weight.nelement()
+            + model.features_extractor[2].weight.nelement()
         )
 
 
@@ -92,7 +98,7 @@ def main(nb_pruning_iter, max_training_iter, p_linear, p_conv):
 
         pruning_rate_conv = p_conv ** (1 / n)
         prune.l1_unstructured(model.features_extractor[0], name="weight", amount=pruning_rate_conv)
-        prune.l1_unstructured(model.features_extractor[3], name="weight", amount=pruning_rate_conv)
+        prune.l1_unstructured(model.features_extractor[2], name="weight", amount=pruning_rate_conv)
 
         pruning_rate_linear = p_linear ** (1 / n)
         prune.l1_unstructured(model.classifier[0], name="weight", amount=pruning_rate_linear)

@@ -12,7 +12,6 @@ class Conv2(nn.Module):
 
         self.features_extractor = nn.Sequential(
             nn.Conv2d(in_channels=3, out_channels=64, kernel_size=(3, 3)),
-            nn.MaxPool2d(kernel_size=(3, 3), stride=2),
             nn.ReLU(inplace=True),
 
             nn.Conv2d(in_channels=64, out_channels=64, kernel_size=(3, 3)),
@@ -21,7 +20,7 @@ class Conv2(nn.Module):
         )
 
         self.classifier = nn.Sequential(
-            nn.Linear(in_features=1_600, out_features=256),
+            nn.Linear(in_features=10_816, out_features=256),
             nn.ReLU(inplace=True),
 
             nn.Linear(in_features=256, out_features=256),
