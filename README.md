@@ -86,6 +86,7 @@ Make sure to install the python dependencies : `python3 -m pip install requireme
 
 Each folder corresponds to one of the main experiments described in the paper:
 * [Lenet-300-100 on MNIST](./Lenet-300-100/README.md)
+* [Conv2 on CIFAR10](./Conv2/README.md)
 
 To reproduce the experiments, simply follow the insctructions described in each `README.md` file.
 
@@ -93,6 +94,7 @@ To reproduce the experiments, simply follow the insctructions described in each 
 
 - [X] Add a results section for each model architecture
 - [ ] Plot the evolution of the iteration of early-stopping
+- [ ] Plot the evolution of the iteration of early-stopping with weight resetting
 - [X] Plot the graph based on the mean of five exeperiments
 - [X] Add the min and max values in each plots
 - [ ] Add experiments with `Conv-2` on CIFAR10
