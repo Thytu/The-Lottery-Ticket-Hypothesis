@@ -75,8 +75,10 @@ def main(nb_pruning_iter, max_training_iter, p_linear, p_conv):
     for n in tqdm(range(1, nb_pruning_iter + 1), total=nb_pruning_iter, leave=False):
         pbar = tqdm(total=max_training_iter, leave=False)
 
-        test_losses[get_sparsity(model=model)] = {}
-        test_accuracies[get_sparsity(model=model)] = {}
+        current_sparisty = get_sparsity(model=model)
+
+        test_losses[current_sparisty] = {}
+        test_accuracies[current_sparisty] = {}
 
         training_iteration = 0
 
@@ -100,8 +102,8 @@ def main(nb_pruning_iter, max_training_iter, p_linear, p_conv):
                 device=DEVICE
             )
 
-            test_losses[get_sparsity(model=model)][training_iteration] = test_loss
-            test_accuracies[get_sparsity(model=model)][training_iteration] = test_acc
+            test_losses[current_sparisty][training_iteration] = test_loss
+            test_accuracies[current_sparisty][training_iteration] = test_acc
 
             pbar.set_description(f"{train_loss=:.2f} {train_acc=:.2f} {test_loss=:.2f} {test_acc=:.2f}")
             pbar.update(training_iteration - last_training_iteration)
