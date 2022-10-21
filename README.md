@@ -22,7 +22,7 @@
     <a href="#usage"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="#about-the-project">View Demo</a>
+    <a href="#usage">View results</a>
     · <a href="https://github.com/Thytu/The-Lottery-Ticket-Hypothesis/issues">Report Bug</a>
     · <a href="https://github.com/Thytu/The-Lottery-Ticket-Hypothesis/issues">Request Feature</a>
   </p>
@@ -58,10 +58,9 @@ Key features:
 * Comparaison of the loss with the `Lenet-300-100` architecture on MNIST depending on the sparsity level
 * Comparaison of the accuracy with the `Lenet-300-100` architecture on MNIST depending on the sparsity level
 
-The paper also experiments with `Conv-2` `Conv-4` `Conv-6` `Resnet-18` and `VGG-19` which I didn't had time to on include (yet).
+The paper also experiments with `Conv-2` `Conv-4` `Conv-6` `Resnet-18` and `VGG-19` which I didn't had time to on include (yet).\
 If you would like to add any of those models, please consider to fork this repo and to create a pull request.
 
-<br/>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -73,28 +72,26 @@ If you would like to add any of those models, please consider to fork this repo 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 ## Getting Started
 
 To get a local copy up and running follow these simple example steps.
 
 Make sure to install the python dependencies : `python3 -m pip install requirements.txt`
-
+(having access to a GPU will greatly increase the training speed but it's not mandatory)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
 ## Usage
 
-**To reproduce experiments using Lenet-300-100** : `python src/main.py`
+Each folder corresponds to one of the main experiments described in the paper:
+* [Lenet-300-100 on MNIST](./Lenet-300-100/README.md)
 
-Running this script will train a `Lenet-300-100` based model on `MNIST` and will prune iteratively the model.
-
-Each layer is puned independently by a factor $P$, defined as follow : $P=p^{1/n}$ with $p=0.2$ and $n$ the round of pruning.
+To reproduce the experiments, simply follow the insctructions described in each `README.md` file.
 
 ## Roadmap
 
-- [ ] Add a results section for each model architecture
+- [X] Add a results section for each model architecture
 - [ ] Plot the evolution of the iteration of early-stopping
 - [X] Plot the graph based on the mean of five exeperiments
 - [X] Add the min and max values in each plots
