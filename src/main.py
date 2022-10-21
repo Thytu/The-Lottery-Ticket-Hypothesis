@@ -6,7 +6,7 @@ from torch.nn.utils import prune
 from data_handler import get_data_loaders
 from training import train_model, test_model
 from torch.nn import CrossEntropyLoss, Module
-from ploting import plot_losses, plot_accuracies
+from ploting import plot_experiment
 from torch.cuda import is_available as cuda_is_available
 from torch import device as get_device, sum as torch_sum
 
@@ -88,6 +88,8 @@ def main(nb_pruning_iter, max_training_iter, p):
             pbar.set_description(f"{train_loss=:.2f} {train_acc=:.2f} {test_loss=:.2f} {test_acc=:.2f}")
             pbar.update(training_iteration - last_training_iteration)
 
+        pbar.close()
+
         pruning_rate = p ** (1 / n)
 
         prune.l1_unstructured(model.classifier[0], name="weight", amount=pruning_rate)
@@ -133,27 +135,4 @@ if __name__ == "__main__":
         test_losses.append(test_losses_in_run)
         test_accuracies.append(test_accuracies_in_run)
 
-    for sparsity in test_losses[0].keys():
-
-        losses[sparsity] = {}
-        min_losses[sparsity] = {}
-        max_losses[sparsity] = {}
-
-        accuracies[sparsity] = {}
-        min_accuracies[sparsity] = {}
-        max_accuracies[sparsity] = {}
-
-        for training_iteration in test_losses[0][sparsity].keys():
-            loss_run_values = [test_losses[run][sparsity][training_iteration] for run in range(NB_RUN)]
-            acc_run_values = [test_accuracies[run][sparsity][training_iteration] for run in range(NB_RUN)]
-
-            losses[sparsity][training_iteration] = sum(loss_run_values) / len(loss_run_values)
-            min_losses[sparsity][training_iteration] = abs(losses[sparsity][training_iteration] - min(loss_run_values))
-            max_losses[sparsity][training_iteration] = abs(losses[sparsity][training_iteration] - max(loss_run_values))
-
-            accuracies[sparsity][training_iteration] = sum(acc_run_values) / len(acc_run_values)
-            min_accuracies[sparsity][training_iteration] = abs(accuracies[sparsity][training_iteration] - min(loss_run_values))
-            max_accuracies[sparsity][training_iteration] = abs(accuracies[sparsity][training_iteration] - max(loss_run_values))
-
-    plot_losses(losses, min_losses, max_losses)
-    plot_accuracies(accuracies, min_losses, max_losses)
+    plot_experiment(test_losses, test_accuracies)
