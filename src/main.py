@@ -115,7 +115,12 @@ if __name__ == "__main__":
     test_accuracies = []
 
     losses = {}
+    min_losses = {}
+    max_losses = {}
+
     accuracies = {}
+    min_accuracies = {}
+    max_accuracies = {}
 
     for run in tqdm(range(NB_RUN)):
 
@@ -125,20 +130,30 @@ if __name__ == "__main__":
             p=P
         )
 
-        test_losses.append(test_accuracies_in_run)
+        test_losses.append(test_losses_in_run)
         test_accuracies.append(test_accuracies_in_run)
 
     for sparsity in test_losses[0].keys():
 
         losses[sparsity] = {}
+        min_losses[sparsity] = {}
+        max_losses[sparsity] = {}
+
         accuracies[sparsity] = {}
+        min_accuracies[sparsity] = {}
+        max_accuracies[sparsity] = {}
 
         for training_iteration in test_losses[0][sparsity].keys():
             loss_run_values = [test_losses[run][sparsity][training_iteration] for run in range(NB_RUN)]
             acc_run_values = [test_accuracies[run][sparsity][training_iteration] for run in range(NB_RUN)]
 
             losses[sparsity][training_iteration] = sum(loss_run_values) / len(loss_run_values)
-            accuracies[sparsity][training_iteration] = sum(acc_run_values) / len(acc_run_values)
+            min_losses[sparsity][training_iteration] = abs(losses[sparsity][training_iteration] - min(loss_run_values))
+            max_losses[sparsity][training_iteration] = abs(losses[sparsity][training_iteration] - max(loss_run_values))
 
-    plot_losses(losses)
-    plot_accuracies(accuracies)
+            accuracies[sparsity][training_iteration] = sum(acc_run_values) / len(acc_run_values)
+            min_accuracies[sparsity][training_iteration] = abs(accuracies[sparsity][training_iteration] - min(loss_run_values))
+            max_accuracies[sparsity][training_iteration] = abs(accuracies[sparsity][training_iteration] - max(loss_run_values))
+
+    plot_losses(losses, min_losses, max_losses)
+    plot_accuracies(accuracies, min_losses, max_losses)

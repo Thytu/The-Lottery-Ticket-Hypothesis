@@ -97,7 +97,7 @@ Each layer is puned independently by a factor $P$, defined as follow : $P=p^{1/n
 - [ ] Add a results section for each model architecture
 - [ ] Plot the evolution of the iteration of early-stopping
 - [X] Plot the graph based on the mean of five exeperiments
-- [ ] Add the min and max values in each plots
+- [X] Add the min and max values in each plots
 - [ ] Add experiments with `Conv-2` on CIFAR10
 - [ ] Add experiments with `Conv-4` on CIFAR10
 - [ ] Add experiments with `Conv-6` on CIFAR10
