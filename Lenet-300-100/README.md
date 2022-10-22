@@ -40,3 +40,8 @@ Test accuracy on Lenet (iterative pruning) as training proceeds. Each curve is t
 <div align="center">
   <img src="./images/losses.png"/>
 </div>
+
+The iteration at which early-stopping would occur of the Lenet architecture for MNIST when trained starting at various sizes (average of five trials).
+<div align="center">
+  <img src="./images/early_stop.png.png"/>
+</div>
