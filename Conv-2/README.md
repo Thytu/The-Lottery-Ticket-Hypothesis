@@ -31,14 +31,14 @@ $p=0.1$ for convolutions, $p=0.2$ for FC Layers and $p=0.1$ for the output layer
 
 <br />
 
-Loss on the test set using Lenet (iterative pruning) as training proceeds. Each curve is the average of five trials. Labels are $Pm$—the fraction of weights remaining in the network after pruning. Error bars are the minimum and maximum of any trial.
+Loss on the test set using Conv-2 (iterative pruning) as training proceeds. Each curve is the average of five trials. Labels are $Pm$—the fraction of weights remaining in the network after pruning. Error bars are the minimum and maximum of any trial.
 <div align="center">
   <img src="./images/accuracies.png"/>
 </div>
 
 <br />
 
-Test accuracy on Lenet (iterative pruning) as training proceeds. Each curve is the average of five trials. Labels are $Pm$—the fraction of weights remaining in the network after pruning. Error bars are the minimum and maximum of any trial.
+Test accuracy on Conv-2 (iterative pruning) as training proceeds. Each curve is the average of five trials. Labels are $Pm$—the fraction of weights remaining in the network after pruning. Error bars are the minimum and maximum of any trial.
 <div align="center">
   <img src="./images/losses.png"/>
 </div>
