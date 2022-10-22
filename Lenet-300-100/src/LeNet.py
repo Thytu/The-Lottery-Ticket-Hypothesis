@@ -29,3 +29,12 @@ class LeNet(nn.Module):
         )
 
         return self.classifier(input_tensor)
+
+if __name__ == "__main__":
+    import pytorch_model_summary as pms
+
+    from torch import randn as torch_randn
+
+    model = LeNet()
+
+    print(pms.summary(model, torch_randn((1, 1, 28, 28))))
