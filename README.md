@@ -106,7 +106,7 @@ To reproduce the experiments, simply follow the insctructions described in each 
 - [X] Add experiments with `Conv-4` on CIFAR10
 - [X] Add experiments with `Conv-6` on CIFAR10
 - [ ] Add experiments with `Resnet-18` on CIFAR10
-- [ ] Add experiments with `VGG-19` on CIFAR10
+- [X] Add experiments with `VGG-19` on CIFAR10
 
 See the [open issues](https://github.com/Thytu/The-Lottery-Ticket-Hypothesis/issues) for a full list of proposed features and known issues.
 
