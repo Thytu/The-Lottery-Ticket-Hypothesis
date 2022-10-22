@@ -10,7 +10,6 @@ from ploting import plot_experiment
 from torch.cuda import is_available as cuda_is_available
 from torch import device as get_device, sum as torch_sum
 
-
 def get_sparsity(model: Module) -> float:
     """
     Calculate the sparsity level given the training iteration step
@@ -33,6 +32,33 @@ def get_sparsity(model: Module) -> float:
     )
 
 
+class EarlyStopper:
+    """
+    Credit : https://stackoverflow.com/a/73704579/12625642
+    """
+
+    def __init__(self, patience=1, min_delta=0):
+
+        self.patience = patience
+        self.min_delta = min_delta
+
+        self.counter = 0
+        self.min_validation_loss = float('inf')
+
+    def __call__(self, validation_loss):
+        if validation_loss < self.min_validation_loss:
+            self.min_validation_loss = validation_loss
+            self.counter = 0
+
+        elif validation_loss >= (self.min_validation_loss + self.min_delta):
+            self.counter += 1
+
+            if self.counter >= self.patience:
+                return True
+
+        return False
+
+
 def main(nb_pruning_iter, max_training_iter, p):
 
     DEVICE = get_device("cuda" if cuda_is_available() else "cpu")
@@ -46,19 +72,26 @@ def main(nb_pruning_iter, max_training_iter, p):
         lr=1.2e-3,
     )
 
+    EARLY_STOP_PATIENCE = 2
+
     # TODO: use val loader for evaluation early stop
-    (train_dataloader, test_dataloader, _) = get_data_loaders(batch_size=60, num_workers=4)
+    (train_dataloader, test_dataloader, val_dataloader) = get_data_loaders(batch_size=60, num_workers=4)
 
     test_losses = {}
     test_accuracies = {}
-
+    early_stop_iteration_steps = {}
 
     # 'n' is the paper represents the number of pruning iterations
     for n in tqdm(range(1, nb_pruning_iter + 1), total=nb_pruning_iter, leave=False):
         pbar = tqdm(total=max_training_iter, leave=False)
 
-        test_losses[get_sparsity(model=model)] = {}
-        test_accuracies[get_sparsity(model=model)] = {}
+        current_sparsiry = get_sparsity(model=model)
+
+        test_losses[current_sparsiry] = {}
+        test_accuracies[current_sparsiry] = {}
+
+        early_stop = None
+        early_stopper = EarlyStopper(patience=EARLY_STOP_PATIENCE)
 
         training_iteration = 0
 
@@ -82,11 +115,26 @@ def main(nb_pruning_iter, max_training_iter, p):
                 device=DEVICE
             )
 
-            test_losses[get_sparsity(model=model)][training_iteration] = test_loss
-            test_accuracies[get_sparsity(model=model)][training_iteration] = test_acc
+            val_loss, _ = test_model(
+                model=model,
+                dataloader=val_dataloader,
+                criterion=criterion,
+                device=DEVICE
+            )
+
+            if early_stop is None and early_stopper(val_loss):
+                early_stop = training_iteration - (training_iteration - last_training_iteration) * EARLY_STOP_PATIENCE
+
+            test_losses[current_sparsiry][training_iteration] = test_loss
+            test_accuracies[current_sparsiry][training_iteration] = test_acc
 
             pbar.set_description(f"{train_loss=:.2f} {train_acc=:.2f} {test_loss=:.2f} {test_acc=:.2f}")
             pbar.update(training_iteration - last_training_iteration)
+
+        if early_stop is None:
+            early_stop = training_iteration
+
+        early_stop_iteration_steps[current_sparsiry] = early_stop
 
         pbar.close()
 
@@ -104,7 +152,7 @@ def main(nb_pruning_iter, max_training_iter, p):
 
         model.load_state_dict(reseted_weights)
 
-    return test_losses, test_accuracies
+    return test_losses, test_accuracies, early_stop_iteration_steps
 
 
 if __name__ == "__main__":
@@ -113,20 +161,13 @@ if __name__ == "__main__":
     NB_PRUNING_ITER = 7
     MAX_TRAINING_ITER = 15_000
 
+    early_stops = []
     test_losses = []
     test_accuracies = []
 
-    losses = {}
-    min_losses = {}
-    max_losses = {}
-
-    accuracies = {}
-    min_accuracies = {}
-    max_accuracies = {}
-
     for run in tqdm(range(NB_RUN)):
 
-        test_losses_in_run, test_accuracies_in_run = main(
+        test_losses_in_run, test_accuracies_in_run, early_stops_in_run = main(
             nb_pruning_iter=NB_PRUNING_ITER,
             max_training_iter=MAX_TRAINING_ITER,
             p=P
@@ -134,5 +175,6 @@ if __name__ == "__main__":
 
         test_losses.append(test_losses_in_run)
         test_accuracies.append(test_accuracies_in_run)
+        early_stops.append(early_stops_in_run)
 
-    plot_experiment(test_losses, test_accuracies)
+    plot_experiment(test_losses, test_accuracies, early_stops)
