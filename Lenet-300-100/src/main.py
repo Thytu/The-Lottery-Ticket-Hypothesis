@@ -11,6 +11,28 @@ from torch.cuda import is_available as cuda_is_available
 from torch import device as get_device, sum as torch_sum
 
 
+def get_sparsity(model: Module) -> float:
+    """
+    Calculate the sparsity level given the training iteration step
+
+    Args:
+        model (Module): model the calculate the sparisty of (expects LeNet architecture)
+
+    Returns:
+        float: sparsity level given the training iteration step
+    """
+
+    return 100. * float(
+        torch_sum(model.classifier[0].weight == 0)
+        + torch_sum(model.classifier[2].weight == 0)
+        + torch_sum(model.classifier[-1].weight == 0)
+    ) / float(
+        model.classifier[0].weight.nelement()
+        + model.classifier[2].weight.nelement()
+        + model.classifier[-1].weight.nelement()
+    )
+
+
 def main(nb_pruning_iter, max_training_iter, p):
 
     DEVICE = get_device("cuda" if cuda_is_available() else "cpu")
@@ -29,28 +51,6 @@ def main(nb_pruning_iter, max_training_iter, p):
 
     test_losses = {}
     test_accuracies = {}
-
-
-    def get_sparsity(model: Module) -> float:
-        """
-        Calculate the sparsity level given the training iteration step
-
-        Args:
-            model (Module): model the calculate the sparisty of (expects LeNet architecture)
-
-        Returns:
-            float: sparsity level given the training iteration step
-        """
-
-        return 100. * float(
-            torch_sum(model.classifier[0].weight == 0)
-            + torch_sum(model.classifier[2].weight == 0)
-            + torch_sum(model.classifier[-1].weight == 0)
-        ) / float(
-            model.classifier[0].weight.nelement()
-            + model.classifier[2].weight.nelement()
-            + model.classifier[-1].weight.nelement()
-        )
 
 
     # 'n' is the paper represents the number of pruning iterations
