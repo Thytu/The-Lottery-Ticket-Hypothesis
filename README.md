@@ -55,10 +55,13 @@
 I found the Lottery Ticket hypothesis fascinating so I decided to re-implement the paper (fully for fun).
 
 Key features:
-* Comparaison of the loss with the `Lenet-300-100` architecture on MNIST depending on the sparsity level
-* Comparaison of the accuracy with the `Lenet-300-100` architecture on MNIST depending on the sparsity level
+* Code and results with the `Lenet-300-100` architecture on MNIST dataset
+* Code and results with the `Conv-2` architecture, variants of VGG (Simonyan & Zisserman, 2014) on CIFAR10 dataset
+* Code and results with the `Conv-4` architecture, variants of VGG (Simonyan & Zisserman, 2014) on CIFAR10 dataset
+* Code and results with the `Conv-6` architecture, variants of VGG (Simonyan & Zisserman, 2014) on CIFAR10 dataset
 
-The paper also experiments with `Conv-2` `Conv-4` `Conv-6` `Resnet-18` and `VGG-19` which I didn't had time to on include (yet).\
+
+The paper also experiments with `Resnet-18` and `VGG-19` which I didn't had time to on include (yet).\
 If you would like to add any of those models, please consider to fork this repo and to create a pull request.
 
 
