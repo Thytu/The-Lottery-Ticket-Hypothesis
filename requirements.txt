@@ -2,3 +2,4 @@ torch==1.12.0
 matplotlib==3.5.3
 tqdm==4.40.0
 torchvision==0.13.
+pytorch_model_summary==0.1.2
