@@ -64,6 +64,17 @@ Key features:
 The paper also experiments with `Resnet-18` and `VGG-19` which I didn't had time to on include (yet).\
 If you would like to add any of those models, please consider to fork this repo and to create a pull request.
 
+<br/>
+
+<div align="center">
+
+  <h3 align="center">The Lottery Ticket Hypothesis - Paper discussion</h3>
+
+  <br/>
+
+  [![The Lottery Ticket Hypothesis](https://img.youtube.com/vi/aQ9r4kpWPv0/0.jpg)](https://youtu.be/aQ9r4kpWPv0)
+
+</div>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
