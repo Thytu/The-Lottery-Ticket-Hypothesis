@@ -20,7 +20,7 @@
 **To reproduce this experiment** : `python src/main.py`
 
 Running this script will train a `VGG-19` based model on `CIFAR10` and will prune iteratively the model.\
-Each layer is puned independently by a factor $P$, defined as follow : $P=p^{1/n}$ with $n$ the round of pruning.
+Pruning is applyied globally by a factor $P$, defined as follow : $P=p^{1/n}$ with $n$ the round of pruning.
 
 $p=0.20$ for convolutions, $p=0$ for FC Layers.
 
