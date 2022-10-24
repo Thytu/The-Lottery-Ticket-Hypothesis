@@ -71,9 +71,43 @@ def __plot_test_accuracies(
     plt.savefig("images/accuracies.png", bbox_inches='tight', pad_inches=0.1)
 
 
+def __plot_early_stops(
+    early_stops: Dict[float, Dict[float, float]],
+    mins: Dict[float, Dict[float, float]],
+    maxs: Dict[float, Dict[float, float]],
+) -> None:
+    """
+    Plot the evolution of the accuracy regarding the sparsity level and iteration step
+
+    Args:
+        early_stops (Dict[float, Dict[float, float]]): Dict containing the mean early stop step regarding the sparsity level and iteration step
+        mins (Dict[float, Dict[float, float]]): Dict containing the min early stop step regarding the sparsity level and iteration step
+        maxs (Dict[float, Dict[float, float]]): Dict containing the max early stop step regarding the sparsity level and iteration step
+    """
+
+    plt.clf()
+
+    plt.figure(figsize=(20, 10))
+    plt.tight_layout()
+
+    plt.gca().invert_xaxis()
+
+    percentage_of_weights_remaining = [round(100 - sparsity_level, 2) for sparsity_level in early_stops.keys()]
+
+    yerr = (list(mins.values()), list(maxs.values()))
+    plt.errorbar(percentage_of_weights_remaining, list(early_stops.values()), yerr=yerr, fmt='+--')
+
+    plt.xlabel("Percent of Weights Remaining")
+    plt.ylabel("Early-Stop Iteration (Val.)")
+    plt.title("The early-stopping iteration of the iterative lottery ticket experiment.")
+
+    plt.savefig("images/early_stop.png", bbox_inches='tight', pad_inches=0.1)
+
+
 def plot_experiment(
     test_losses: List[Dict[float, Dict[float, float]]],
     test_accuracies: List[Dict[float, Dict[float, float]]],
+    early_stops_in_each_runs: List[Dict[float, float]],
 ):
     """
     Plot the experiment's results (test loss, test accuracy, early stop)
@@ -82,6 +116,10 @@ def plot_experiment(
         test_losses (List[Dict[float, Dict[float, float]]]): evolution of the test loss in each run
         test_accuracies (List[Dict[float, Dict[float, float]]]): evolution of the test accuracy in each run
     """
+
+    early_stops = {}
+    min_early_stops = {}
+    max_early_stops = {}
 
     losses = {}
     min_losses = {}
@@ -103,6 +141,12 @@ def plot_experiment(
         min_accuracies[sparsity] = {}
         max_accuracies[sparsity] = {}
 
+        early_stops_at_sparsity = [early_stops_in_each_runs[run][sparsity] for run in range(nb_run)]
+
+        early_stops[sparsity] = sum(early_stops_at_sparsity) / nb_run
+        min_early_stops[sparsity] = abs(early_stops[sparsity] - min(early_stops_at_sparsity))
+        max_early_stops[sparsity] = abs(early_stops[sparsity] - max(early_stops_at_sparsity))
+
         for training_iteration in test_losses[0][sparsity].keys():
             loss_run_values = [test_losses[run][sparsity][training_iteration] for run in range(nb_run)]
             acc_run_values = [test_accuracies[run][sparsity][training_iteration] for run in range(nb_run)]
@@ -117,3 +161,4 @@ def plot_experiment(
 
     __plot_test_losses(losses, min_losses, max_losses)
     __plot_test_accuracies(accuracies, min_losses, max_losses)
+    __plot_early_stops(early_stops, min_early_stops, max_early_stops)
