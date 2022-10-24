@@ -9,6 +9,8 @@ from torch.nn import CrossEntropyLoss, Module
 from ploting import plot_experiment
 from torch.cuda import is_available as cuda_is_available
 from torch import device as get_device, sum as torch_sum
+from EarlyStopper import EarlyStopper
+
 
 def get_sparsity(model: Module) -> float:
     """
@@ -30,33 +32,6 @@ def get_sparsity(model: Module) -> float:
         + model.classifier[2].weight.nelement()
         + model.classifier[-1].weight.nelement()
     )
-
-
-class EarlyStopper:
-    """
-    Credit : https://stackoverflow.com/a/73704579/12625642
-    """
-
-    def __init__(self, patience=1, min_delta=0):
-
-        self.patience = patience
-        self.min_delta = min_delta
-
-        self.counter = 0
-        self.min_validation_loss = float('inf')
-
-    def __call__(self, validation_loss):
-        if validation_loss < self.min_validation_loss:
-            self.min_validation_loss = validation_loss
-            self.counter = 0
-
-        elif validation_loss >= (self.min_validation_loss + self.min_delta):
-            self.counter += 1
-
-            if self.counter >= self.patience:
-                return True
-
-        return False
 
 
 def main(nb_pruning_iter, max_training_iter, p):
