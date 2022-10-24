@@ -50,6 +50,8 @@ class Conv6(nn.Module):
         def weights_init(m):
             if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
                 nn.init.xavier_normal_(m.weight.data)
+                m.weight.data[m.weight.data==0] = 0.005
+
                 nn.init.zeros_(m.bias.data)
 
         self.apply(weights_init)
