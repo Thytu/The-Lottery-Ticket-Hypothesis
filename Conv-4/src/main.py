@@ -144,7 +144,7 @@ def main(nb_pruning_iter, max_training_iter, p_linear, p_conv):
 
         model.load_state_dict(reseted_weights)
 
-    return test_losses, test_accuracies
+    return test_losses, test_accuracies, early_stop_iteration_steps
 
 
 if __name__ == "__main__":
