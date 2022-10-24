@@ -49,7 +49,6 @@ def main(nb_pruning_iter, max_training_iter, p):
 
     EARLY_STOP_PATIENCE = 2
 
-    # TODO: use val loader for evaluation early stop
     (train_dataloader, test_dataloader, val_dataloader) = get_data_loaders(batch_size=60, num_workers=4)
 
     test_losses = {}
