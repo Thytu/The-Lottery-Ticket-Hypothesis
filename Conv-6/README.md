@@ -42,3 +42,10 @@ Test accuracy on Conv-6 (iterative pruning) as training proceeds. Each curve is 
 <div align="center">
   <img src="./images/losses.png"/>
 </div>
+
+<br />
+
+The iteration at which early-stopping would occur of the Conv-6 architecture for CIFAR10 when trained starting at various sizes (average of five trials).
+<div align="center">
+  <img src="./images/early_stop.png.png"/>
+</div>
