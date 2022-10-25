@@ -101,8 +101,6 @@ def main(nb_pruning_iter, max_epoch, p_conv):
         test_losses[current_sparisty] = {}
         test_accuracies[current_sparisty] = {}
 
-        training_iteration = 0
-
         for epoch in pbar:
 
             # learning rate scheduling
@@ -110,7 +108,6 @@ def main(nb_pruning_iter, max_epoch, p_conv):
                 for g in optimizer.param_groups:
                     g['lr'] /= 10
 
-            last_training_iteration = training_iteration
             train_loss, train_acc = train_model(
                 model=model,
                 dataloader=train_dataloader,
@@ -126,11 +123,11 @@ def main(nb_pruning_iter, max_epoch, p_conv):
                 device=DEVICE
             )
 
-            test_losses[current_sparisty][training_iteration] = test_loss
-            test_accuracies[current_sparisty][training_iteration] = test_acc
+            test_losses[current_sparisty][epoch] = test_loss
+            test_accuracies[current_sparisty][epoch] = test_acc
 
             pbar.set_description(f"{train_loss=:.2f} {train_acc=:.2f} {test_loss=:.2f} {test_acc=:.2f}")
-            pbar.update(training_iteration - last_training_iteration)
+            pbar.update(1)
 
         pbar.close()
 
