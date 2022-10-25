@@ -7,6 +7,18 @@
     Code and result for the experiments with Lenet-300-100 on MNIST.
     <br />
   </p>
+
+
+| Layer (type)     | Input Shape   | Output Shape | Param   | Tr. Param |
+| ---------------- | ------------- | ------------ |-------- | --------- |
+|         Linear-1 |      [1, 784] |     [1, 300] | 235,500 |     235,500
+|           ReLU-2 |      [1, 300] |     [1, 300] |       0 |           0
+|         Linear-3 |      [1, 300] |     [1, 100] |  30,100 |      30,100
+|           ReLU-4 |      [1, 100] |     [1, 100] |       0 |           0
+|         Linear-5 |      [1, 100] |      [1, 10] |   1,010 |       1,010
+
+
+
 </div>
 
 <br/>
