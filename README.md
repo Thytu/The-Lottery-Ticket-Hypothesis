@@ -109,8 +109,8 @@ To reproduce the experiments, simply follow the insctructions described in each 
 ## Roadmap
 
 - [X] Add a results section for each model architecture
-- [ ] Plot the evolution of the iteration of early-stopping
-- [ ] Plot the evolution of the iteration of early-stopping with weight resetting
+- [X] Plot the evolution of iteration for early-stopping
+- [ ] Plot the evolution of iteration for early-stopping with weight resetting
 - [X] Plot the graph based on the mean of five exeperiments
 - [X] Add the min and max values in each plots
 - [X] Add experiments with `Conv-2` on CIFAR10
