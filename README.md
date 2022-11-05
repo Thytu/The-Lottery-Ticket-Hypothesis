@@ -35,6 +35,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#about-the-project">About The Project</a></li>
+    <li><a href="#videos">Videos</a></li>
     <li><a href="#getting-started">Getting Started</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
@@ -66,6 +67,10 @@ If you would like to add any of those models, please consider to fork this repo 
 
 <br/>
 
+### Videos
+
+<br/>
+
 <div align="center">
 
   <h3 align="center">The Lottery Ticket Hypothesis - Paper discussion</h3>
@@ -73,11 +78,18 @@ If you would like to add any of those models, please consider to fork this repo 
   <br/>
 
   [![The Lottery Ticket Hypothesis](https://img.youtube.com/vi/aQ9r4kpWPv0/0.jpg)](https://youtu.be/aQ9r4kpWPv0)
+  
+  <br/>
+  
+  <h3 align="center">The Lottery Ticket Hypothesis - Live coding</h3>
+  
+  [![The Lottery Ticket Hypothesis](https://img.youtube.com/vi/Q5wels_MuIk/0.jpg)](https://youtu.be/Q5wels_MuIk)
 
 </div>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+<br/>
 
 ### Built With
 
